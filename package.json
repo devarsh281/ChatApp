@@ -1,0 +1,19 @@
+{
+  "name": "pern-monorepo",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "install:all": "npm install",
+    "start": "concurrently \"npm run dev --prefix backend\" \"npm run dev --prefix frontend\""
+  },
+  "devDependencies": {
+    "@types/pg": "^8.11.11",
+    "concurrently": "^8.0.1"
+  },
+  "dependencies": {
+    "@emoji-mart/react": "^1.1.1"
+  }
+}
