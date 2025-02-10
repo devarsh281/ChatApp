@@ -1,11 +1,11 @@
 import { useState, useEffect, useRef } from "react";
-import axios from "axios";
 import { Send, Smile, MoreVertical, Sticker } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
+import { disAPI } from "@/lib/utils";
 
 interface Message {
   text?: string;
@@ -34,39 +34,44 @@ export default function ChatApp() {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!input.trim()) return;
+    if (!input?.trim()) return;  
     const userMessage: Message = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-
+  
     try {
-      const res = await axios.post("http://localhost:8085/send-message", {
-        text: input,
-      });
-      const botMessage: Message = { text: res.data.response, sender: "bot" };
+      const res = await disAPI(
+        "send-message",
+        "POST",
+        JSON.stringify({ text: input })
+      );
+      const botMessage: Message = { text: res.response, sender: "bot" };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Error sending message:", error);
     }
-
+  
     setShowEmojiPicker(false);
   };
-
+  
   const sendSticker = async (stickerUrl: string) => {
     const userMessage: Message = { sticker: stickerUrl, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setShowStickerPicker(false);
-
+  
     try {
-      const res = await axios.post("http://localhost:8085/send-message", {
-        sticker: stickerUrl,
-      });
-      const botMessage: Message = { sticker: res.data.sticker, sender: "bot" };
+      const res = await disAPI(
+        "send-message",
+        "POST",
+        JSON.stringify({ sticker: stickerUrl })
+      );
+      const botMessage: Message = { sticker: res.sticker, sender: "bot" };
       setMessages((prev) => [...prev, botMessage]);
     } catch (error) {
       console.error("Error sending sticker:", error);
     }
   };
+  
 
   const handleEmojiSelect = (emoji: { native: string }) => {
     setInput((prevInput) => prevInput + emoji.native);
@@ -75,7 +80,6 @@ export default function ChatApp() {
   const toggleEmojiPicker = () => {
     setShowEmojiPicker((prev) => !prev);
   };
-  
 
   return (
     <div className="bg-gray-200 w-screen">
