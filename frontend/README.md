@@ -1,4 +1,4 @@
-# Chatbot API
+# Chatbot FrontEnd
 
 This is a simple chatbot frontend built React.js designed to handle user messages, generate responses based on text,emoji input and sticker input.
 

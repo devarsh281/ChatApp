@@ -1,9 +1,0 @@
-{
-    "schema": "./src/schema.ts",
-    "out": "./drizzle",
-    "dialect": "postgresql",
-    "driver": "pg",
-    "dbCredentials": {
-        "connectionString": "postgres://technouser:User@5798@localhost:5432/chat"
-    }
-}
