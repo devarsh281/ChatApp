@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import ChatApp from "./components/Display/ChatApp";
+import ChatApp from "./components/display/ChatApp";
 
 const App = () => {
   return (

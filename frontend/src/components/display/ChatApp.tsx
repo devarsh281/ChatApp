@@ -34,11 +34,11 @@ export default function ChatApp() {
   }, [messages]);
 
   const sendMessage = async () => {
-    if (!input?.trim()) return;  
+    if (!input?.trim()) return;
     const userMessage: Message = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
-  
+
     try {
       const res = await disAPI(
         "send-message",
@@ -50,15 +50,15 @@ export default function ChatApp() {
     } catch (error) {
       console.error("Error sending message:", error);
     }
-  
+
     setShowEmojiPicker(false);
   };
-  
+
   const sendSticker = async (stickerUrl: string) => {
     const userMessage: Message = { sticker: stickerUrl, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setShowStickerPicker(false);
-  
+
     try {
       const res = await disAPI(
         "send-message",
@@ -71,7 +71,6 @@ export default function ChatApp() {
       console.error("Error sending sticker:", error);
     }
   };
-  
 
   const handleEmojiSelect = (emoji: { native: string }) => {
     setInput((prevInput) => prevInput + emoji.native);
@@ -83,7 +82,7 @@ export default function ChatApp() {
 
   return (
     <div className="bg-gray-200 w-screen">
-      <div className="flex items-center justify-center min-h-screen bg-gray-900">
+      <div className="flex items-center justify-center min-h-screen bg-gray-500">
         <div
           className="w-full max-w-sm bg-white dark:bg-gray-800 rounded-3xl shadow-lg overflow-hidden"
           style={{ height: "600px", width: "350px" }}
@@ -143,7 +142,6 @@ export default function ChatApp() {
             ))}
             <div ref={chatRef}></div>
           </div>
-
           <div className="bg-white dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-3 relative">
             <div className="flex items-center space-x-1">
               <Button
@@ -153,7 +151,6 @@ export default function ChatApp() {
               >
                 <Sticker className="h-5 w-5" />
               </Button>
-
               <Input
                 type="text"
                 className="flex-1"
@@ -178,7 +175,7 @@ export default function ChatApp() {
                   data={data}
                   onEmojiSelect={handleEmojiSelect}
                   emojiSize={20}
-                  theme="dark"
+                  theme="light"
                 />
               </div>
             )}
