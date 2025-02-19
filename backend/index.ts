@@ -10,7 +10,7 @@ app.use(cors({
 }));
 app.use(express.json());
 
-const PORT = Number(process.env.PORT) || 8080;
+const PORT = process.env.PORT || 8085;
 
 const generateResponse = (input: string): string => {
   const emojisInInput = Array.from(input).filter((char) =>
@@ -86,7 +86,7 @@ app.get("/messages", async (_req: Request, res: Response) => {
 app.get('/hello', (req, res) => {
   res.json({ message: 'Hello from backend' });
 });
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+app.listen(PORT, () => console.log(`Server running on port 8085`));
 // app.listen(PORT, '0.0.0.0', () => {
 //   console.log(`Server is running on port ${PORT}`);
 // });
