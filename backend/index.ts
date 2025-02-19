@@ -83,4 +83,7 @@ app.get("/messages", async (_req: Request, res: Response) => {
   res.json(allMessages);
 });
 
+app.get('/', (req, res) => {
+  res.json({ message: 'Hello from backend' });
+});
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
