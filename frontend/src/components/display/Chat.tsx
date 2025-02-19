@@ -1,5 +1,4 @@
-import { atom, useAtom } from "jotai";
-import { useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Send, Smile, MoreVertical, Sticker } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
@@ -8,14 +7,6 @@ import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
 import { disAPI } from "@/lib/utils";
 
-// helps to manage both global and local state management .
-// whereas the usestate is used to manage only local state and for globally we have to use useContext.
-
-const messagesAtom = atom<Message[]>([]);
-const inputAtom = atom("");
-const showEmojiPickerAtom = atom(false);
-const showStickerPickerAtom = atom(false);
-
 interface Message {
   text?: string;
   sticker?: string;
@@ -23,10 +14,10 @@ interface Message {
 }
 
 export default function ChatApp() {
-  const [messages, setMessages] = useAtom(messagesAtom);
-  const [input, setInput] = useAtom(inputAtom);
-  const [showEmojiPicker, setShowEmojiPicker] = useAtom(showEmojiPickerAtom);
-  const [showStickerPicker, setShowStickerPicker] = useAtom(showStickerPickerAtom);
+  const [messages, setMessages] = useState<Message[]>([]);
+  const [input, setInput] = useState("");
+  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+  const [showStickerPicker, setShowStickerPicker] = useState(false);
   const chatRef = useRef<HTMLDivElement>(null);
 
   const stickers = [
@@ -39,11 +30,11 @@ export default function ChatApp() {
   ];
 
   useEffect(() => {
-    chatRef.current?.scrollIntoView({ behavior:"smooth" });
-  }, [messages])
-  
+    chatRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
+
   const sendMessage = async () => {
-    if (!input) return;
+    if (!input?.trim()) return;
     const userMessage: Message = { text: input, sender: "user" };
     setMessages((prev) => [...prev, userMessage]);
     setInput("");
@@ -81,7 +72,7 @@ export default function ChatApp() {
     }
   };
 
-  const handleEmojiSelect = (emoji: { native:string }) => {
+  const handleEmojiSelect = (emoji: { native: string }) => {
     setInput((prevInput) => prevInput + emoji.native);
   };
 
@@ -98,7 +89,7 @@ export default function ChatApp() {
         >
           <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-300 dark:border-gray-700 p-4 flex items-center justify-between">
             <div
-              className="flex items-center space-x-3"
+              className="flex items-center space-x-3 mt-2"
               style={{ height: "50px" }}
             >
               <div className="relative">
@@ -106,7 +97,7 @@ export default function ChatApp() {
                   <AvatarImage src="bot.webp" alt="Bot" />
                   <AvatarFallback>Bot</AvatarFallback>
                 </Avatar>
-                <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-400 ring-2 ring-white" />
+                <span className="absolute bottom-0 right-0 block h-2.5 w-2.5 rounded-full bg-green-500 ring-2 ring-white" />
               </div>
               <div>
                 <h3 className="font-semibold dark:text-gray-200">Chatbot</h3>
@@ -191,9 +182,9 @@ export default function ChatApp() {
 
             {showStickerPicker && (
               <div className="absolute bottom-16 left-2 z-50 bg-white shadow-lg rounded-lg p-2 flex space-x-2 overflow-x-auto">
-                {stickers.map((sticker, index) => (
+                {stickers.map((sticker, idx) => (
                   <img
-                    key={index}
+                    key={idx}
                     src={sticker}
                     alt="sticker"
                     className="w-16 h-16 cursor-pointer hover:opacity-75"
